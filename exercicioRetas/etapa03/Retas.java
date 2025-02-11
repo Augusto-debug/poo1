@@ -1,4 +1,4 @@
-package exercicioRetas.etapa02;
+package exercicioRetas.etapa03;
 
 public class Retas {
     private static double x1;
@@ -17,12 +17,6 @@ public class Retas {
     }
     public double comprimento (){
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    }
-    public boolean valida (){
-        if (x1 == x2 && y1 == y2) {
-            return false;
-        }
-        return true;
     }
     public String exibe (){
         return "Comprimento da reta: " + comprimento();

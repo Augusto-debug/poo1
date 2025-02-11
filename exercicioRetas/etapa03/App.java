@@ -1,4 +1,4 @@
-package exercicioRetas.etapa02;
+package exercicioRetas.etapa03;
 
 import java.util.Scanner;
 
@@ -30,7 +30,7 @@ public class App {
             System.out.print("y2: ");
             double y2 = leCoordenada(4);
             Retas r = new Retas(x1, y1, x2, y2);
-            if (r.valida()) {
+            if (Validacao.valida(x1, y1, x2, y2)) {
                 System.out.println(r.exibe());
             } else {
                 System.out.println("Coordenadas iguais, não é uma reta.");

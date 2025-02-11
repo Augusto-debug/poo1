@@ -1,19 +1,19 @@
-package sobrecarga1;
+package sobrecarga2;
 
-public class Adicao1 {
-    public int addInt(int a, int b) {
+public class Adicao2 {
+    public int add(int a, int b) {
         return a + b;
     }
 
-    public float addFloat(float c, float d) {
+    public float add(float c, float d) {
         return c + d;
     }
 
-    public String exibeInt(int a, int b) {
-        return "O valor de a + b é: " + addInt(a, b);
+    public String exibe(int a, int b) {
+        return "O valor de a + b é: " + add(a, b);
     }
 
-    public String exibeFloat(float c, float d) {
-        return "O valor de c + d é: " + addFloat(c, d);
+    public String exibe(float c, float d) {
+        return "O valor de c + d é: " + add(c, d);
     }
 }

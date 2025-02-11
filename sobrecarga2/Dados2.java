@@ -1,13 +1,13 @@
-package sobrecarga1;
+package sobrecarga2;
 
-public class Dados1 {
+public class Dados2 {
     int a, b;
     float c, d;
-    Dados1(int a, int b) {
+    Dados2(int a, int b) {
         this.a = a;
         this.b = b;
     }
-    Dados1(float c, float d) {
+    Dados2(float c, float d) {
         this.c = c;
         this.d = d;
     }

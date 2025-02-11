@@ -1,0 +1,4 @@
++ => public
+- => private
+_ => private
+em branco é o padrão default.
