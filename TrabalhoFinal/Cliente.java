@@ -21,7 +21,6 @@ class Cliente {
     public void destroiCliente() {
         if (carrinho != null) {
             carrinho = null;
-            System.out.println("Carrinho de compras destruído junto com o cliente.");
         }
     }
 

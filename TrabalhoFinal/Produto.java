@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 class Produto {
     private int id;
     private String nome;

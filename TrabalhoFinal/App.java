@@ -16,7 +16,8 @@ public class App {
             System.out.println("3 - Realizar Compra");
             System.out.println("4 - Listar Produtos");
             System.out.println("5 - Listar Clientes");
-            System.out.println("6 - Destruir Cliente");
+            System.out.println("6 - Mostrar Carrinho de Compras");
+            System.out.println("7 - Destruir Cliente");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -39,6 +40,9 @@ public class App {
                     listarClientes();
                     break;
                 case 6:
+                    mostrarCarrinho();
+                    break;
+                case 7:
                     destruirCliente();
                     break;
                 case 0:
@@ -176,6 +180,48 @@ public class App {
         }
     }
 
+    private static void mostrarCarrinho() {
+        System.out.println("\n=== MOSTRAR CARRINHO DE COMPRAS ===");
+        System.out.print("Digite o ID do cliente: ");
+        int clienteId = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha
+
+        Cliente cliente = null;
+        for (Cliente c : listaClientes) {
+            if (c.getId() == clienteId) {
+                cliente = c;
+                break;
+            }
+        }
+
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado!");
+            return;
+        }
+
+        CarrinhoDeCompras carrinho = cliente.getCarrinho();
+        if (carrinho == null) {
+            System.out.println("Carrinho de compras não existe para este cliente.");
+            return;
+        }
+
+        System.out.println("Produtos no carrinho:");
+        List<Produto> produtos = carrinho.getProdutos();
+        List<Integer> quantidades = carrinho.getQuantidades();
+
+        if (produtos.isEmpty()) {
+            System.out.println("O carrinho está vazio.");
+        } else {
+            for (int i = 0; i < produtos.size(); i++) {
+                Produto produto = produtos.get(i);
+                int quantidade = quantidades.get(i);
+                System.out.printf("ID: %d | Nome: %s | Preço: %.2f | Quantidade: %d%n",
+                        produto.getId(), produto.getNome(), produto.getPreco(), quantidade);
+            }
+            System.out.printf("Total: R$%.2f%n", carrinho.calcularTotal());
+        }
+    }
+
     private static void destruirCliente() {
         System.out.println("\n=== DESTRUIR CLIENTE ===");
         System.out.print("Digite o ID do cliente a ser destruído: ");
@@ -190,10 +236,28 @@ public class App {
         }
         if (cliente == null) {
             System.out.println("Cliente não encontrado!");
-        } else {
-            cliente.destroiCliente();
-            listaClientes.remove(cliente);
-            System.out.println("Cliente e carrinho de compras destruídos com sucesso!");
+            return;
         }
+        System.out.println("\nCarrinho de compras do cliente:");
+        CarrinhoDeCompras carrinho = cliente.getCarrinho();
+        if (carrinho != null) {
+            List<Produto> produtos = carrinho.getProdutos();
+            List<Integer> quantidades = carrinho.getQuantidades();
+
+            if (produtos.isEmpty()) {
+                System.out.println("O carrinho está vazio.");
+            } else {
+                for (int i = 0; i < produtos.size(); i++) {
+                    Produto produto = produtos.get(i);
+                    int quantidade = quantidades.get(i);
+                    System.out.printf("ID: %d | Nome: %s | Preço: %.2f | Quantidade: %d%n",
+                            produto.getId(), produto.getNome(), produto.getPreco(), quantidade);
+                }
+                System.out.printf("Total: R$%.2f%n", carrinho.calcularTotal());
+            }
+        }
+        cliente.destroiCliente();
+        listaClientes.remove(cliente);
+        System.out.println("Cliente e carrinho de compras destruídos com sucesso!");
     }
 }
