@@ -16,6 +16,7 @@ public class App {
             System.out.println("3 - Realizar Compra");
             System.out.println("4 - Listar Produtos");
             System.out.println("5 - Listar Clientes");
+            System.out.println("6 - Destruir Cliente");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -37,6 +38,9 @@ public class App {
                 case 5:
                     listarClientes();
                     break;
+                case 6:
+                    destruirCliente();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -57,6 +61,7 @@ public class App {
         double preco = scanner.nextDouble();
         System.out.print("Estoque: ");
         int estoque = scanner.nextInt();
+        scanner.nextLine();
 
         Produto produto = new Produto(id, nome, preco, estoque);
         listaProdutos.add(produto);
@@ -77,7 +82,6 @@ public class App {
         listaClientes.add(cliente);
         System.out.println("Cliente cadastrado com sucesso!");
     }
-
     private static void realizarCompra() {
         if (listaProdutos.isEmpty()) {
             System.out.println("Nenhum produto cadastrado!");
@@ -87,15 +91,22 @@ public class App {
         System.out.println("\n=== REALIZAR COMPRA ===");
         System.out.print("Digite o ID do cliente: ");
         int clienteId = scanner.nextInt();
-        scanner.nextLine(); 
-        System.out.print("Digite o nome do cliente: ");
-        String clienteNome = scanner.nextLine();
-        System.out.print("Digite o email do cliente: ");
-        String clienteEmail = scanner.nextLine();
+        scanner.nextLine();
 
-        Cliente cliente = new Cliente(clienteId, clienteNome, clienteEmail);
-        CarrinhoDeCompras carrinho = new CarrinhoDeCompras(cliente);
+        Cliente cliente = null;
+        for (Cliente c : listaClientes) {
+            if (c.getId() == clienteId) {
+                cliente = c;
+                break;
+            }
+        }
 
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado!");
+            return;
+        }
+
+        CarrinhoDeCompras carrinho = cliente.getCarrinho();
         System.out.println("Produtos disponíveis:");
         for (Produto produto : listaProdutos) {
             System.out.printf("ID: %d | Nome: %s | Preço: %.2f | Estoque: %d%n",
@@ -108,6 +119,7 @@ public class App {
             int produtoId = scanner.nextInt();
             System.out.print("Digite a quantidade: ");
             int quantidade = scanner.nextInt();
+            scanner.nextLine();
 
             Produto produtoSelecionado = null;
             for (Produto produto : listaProdutos) {
@@ -121,7 +133,7 @@ public class App {
                 System.out.println("Produto não encontrado!");
             } else {
                 try {
-                    cliente.comprar(carrinho, produtoSelecionado, quantidade);
+                    cliente.comprar(produtoSelecionado, quantidade);
                     System.out.println("Produto adicionado ao carrinho!");
                 } catch (Exception e) {
                     System.out.println("Erro: " + e.getMessage());
@@ -130,6 +142,7 @@ public class App {
 
             System.out.print("Deseja continuar comprando? (s/n): ");
             continuar = scanner.next().charAt(0);
+            scanner.nextLine();
         } while (continuar == 's' || continuar == 'S');
 
         try {
@@ -160,6 +173,27 @@ public class App {
                 System.out.printf("ID: %d | Nome: %s | Email: %s%n",
                         cliente.getId(), cliente.getNome(), cliente.getEmail());
             }
+        }
+    }
+
+    private static void destruirCliente() {
+        System.out.println("\n=== DESTRUIR CLIENTE ===");
+        System.out.print("Digite o ID do cliente a ser destruído: ");
+        int clienteId = scanner.nextInt();
+        scanner.nextLine();
+        Cliente cliente = null;
+        for (Cliente c : listaClientes) {
+            if (c.getId() == clienteId) {
+                cliente = c;
+                break;
+            }
+        }
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado!");
+        } else {
+            cliente.destroiCliente();
+            listaClientes.remove(cliente);
+            System.out.println("Cliente e carrinho de compras destruídos com sucesso!");
         }
     }
 }
